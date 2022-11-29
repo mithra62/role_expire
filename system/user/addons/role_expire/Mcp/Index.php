@@ -17,6 +17,8 @@ class Index extends AbstractRoute
      */
     protected $cp_page_title = 'home';
 
+    public $per_page = 10;
+
     /**
      * @param false $id
      * @return AbstractRoute
@@ -43,17 +45,67 @@ class Index extends AbstractRoute
 
         $vars['cp_page_title'] = lang('mr.role.title');
         $table->setColumns([
-            'ct.sub.id',
-            'ct.sub.last_rebill_date',
-            'ct.sub.next_rebill_date' => ['sort' => false],
-            'ct.sub.name',
-            'ct.sub.member_id',
-            'ct.sub.order_id',
-            'ct.sub.status' => ['encode' => false],
-            'ct.sub.manage' => [
+            're.role.id' => 'id',
+            're.role.name' => 'name',
+            'ct.role.ttl' => 'ttl',
+            'ct.role.enabled' => 'enabled',
+            'ct.role.manage' => [
                 'type' => Table::COL_TOOLBAR,
             ],
         ]);
+
+        $table->setNoResultsText(sprintf(lang('no_found'), lang('ct.sub.subscriptions')));
+
+        $roles = ee('Model')
+            ->get('ee:Role');
+
+        $page = ((int)ee('Request')->get('page')) ?: 1;
+        $offset = ($page - 1) * $this->per_page; // Offset is 0 indexed
+
+        // Handle Pagination
+        $totalRoles = $roles->count();
+
+        $roles->limit($this->per_page)
+            ->offset($offset);
+
+        $data = [];
+        $sort_map = [
+            're.role.id' => 'role_id',
+            'ct.role.name' => 'name',
+            'ct.role.ttl' => 'ttl',
+            'ct.role.enabled' => 'enabled'
+        ];
+
+        $roles->order($sort_map[$sort_col], $sort_dir);
+        foreach ($roles->all() as $role) {
+            $url = ee('CP/URL')->make($this->base_url . '/subscriptions/edit/' . $role->getId());
+            $data[] = [
+                [
+                    'content' => $role->getId(),
+                    'href' => $url,
+                ],
+                $role->name,
+                ee('role_expire:RolesService')->checkTtl($role),
+                "<span class='" . ee('role_expire:RolesService')->getStatusCss($role) . "'>" . $role->is_locked . '</span>',
+                ['toolbar_items' => [
+                    'edit' => [
+                        'href' => $url,
+                        'title' => lang('edit'),
+                    ],
+                ]],
+            ];
+        }
+
+        $table->setData($data);
+
+        $vars['pagination'] = ee('CP/Pagination', $totalRoles)
+            ->perPage($this->per_page)
+            ->currentPage($page)
+            ->render($base_url);
+        $vars['table'] = $table->viewData($base_url);
+        $vars['base_url'] = $base_url;
+
+        $this->setBody('index', $vars);
         return $this;
     }
 }
