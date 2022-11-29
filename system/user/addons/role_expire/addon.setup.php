@@ -1,5 +1,7 @@
 <?php
 
+use RoleExpire\Services\RolesService;
+
 return [
     'author'            => 'Eric Lamb',
     'author_url'        => '',
@@ -11,5 +13,10 @@ return [
     // Advanced settings
     'models' => [
         'Settings' => 'Model\RoleExpire',
+    ],
+    'services.singletons' => [
+        'RolesService' => function ($addon) {
+            return new RolesService;
+        },
     ]
 ];
