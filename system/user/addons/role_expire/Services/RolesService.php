@@ -40,6 +40,7 @@ class RolesService
     {
         $settings = $this->getSetting($role->role_id, 'ttl');
         if($settings) {
+            $settings = array_key_exists($settings, $this->ttl_options) ? $this->ttl_options[$settings] : $settings . ' (custom)';
             return $settings;
         }
 

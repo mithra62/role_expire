@@ -106,8 +106,14 @@ class Role_expire_upd extends Installer
                 'default' => '0'
             ],
             'ttl'  => [
-                'type' => 'int',
+                'type' => 'varchar',
                 'constraint' => 10,
+                'null' => false,
+                'default' => '0'
+            ],
+            'ttl_custom' => [
+                'type' => 'int',
+                'constraint' => 1,
                 'null' => false,
                 'default' => '0'
             ],
