@@ -40,12 +40,8 @@ class CheckMemberExpire extends AbstractRoute
                     ->filter('role_id', $role->role_id);
 
                 if ($expire_data->count() == 1) {
-                    echo 'fdsa';
-                    exit;
-
-
-                    $this->settings = ee()->securitee_lib->settings;
-                    if($this->settings['enable_expiring_members'] == '1'
+                    $settings = $expire_data->first();
+                    if($settings->enabled()
                         && in_array($group_id, $this->settings['member_expire_member_groups'])
                         && $this->settings['member_expire_ttl'] != '0'
                     ) {

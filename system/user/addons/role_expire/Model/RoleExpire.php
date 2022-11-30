@@ -17,4 +17,9 @@ class RoleExpire extends Model
     protected $ttl;
     protected $enabled;
 
+    public function enabled()
+    {
+        return $this->enabled === 1;
+    }
+
 }

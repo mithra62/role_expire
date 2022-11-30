@@ -8,15 +8,42 @@ class RolesService
 {
     protected array $settings = [];
 
+    protected array $ttl_options = [
+        '0' => 'Never',
+        '1800' => '30 Minutes',
+        '3600' => '1 Hour',
+        '7200' => '2 Hours',
+        '43200' => '12 Hours',
+        '86400' => '1 Day',
+        '172800' => '2 Days',
+        '432000' => '5 Days',
+        '604800' => '1 Week',
+        '2592000' => '30 Days',
+        '15552000' => '6 Months',
+        '31104000' => '1 Year',
+        'custom' => 'Custom'
+    ];
+
+    /**
+     * @return array|string[]
+     */
+    public function getTtlOptions(): array
+    {
+        return $this->ttl_options;
+    }
+
     /**
      * @param RoleModel $role
      * @return string
      */
     public function checkTtl(RoleModel $role): string
     {
-        $settings = $this->getSettings($role->role_id);
+        $settings = $this->getSetting($role->role_id, 'ttl');
+        if($settings) {
+            return $settings;
+        }
 
-        return 're.role.none';
+        return lang('re.role.none');
     }
 
     /**
@@ -25,26 +52,42 @@ class RolesService
      */
     public function getStatusCss(RoleModel $role)
     {
-        if (isset($role->status)) {
-            switch ($role->status) {
-                case 'open':
-                    $status_class = 'st-open';
-                    break;
-                case 'closed':
-                    $status_class = 'st-error';
-                    break;
-                default:
-                    $status_class = 'st-pending';
-                    break;
-            }
-
-            return $status_class;
+        $status_class = 'st-pending';
+        if ($this->getSetting($role->role_id, 'enabled') === 1) {
+            $status_class = 'st-open';
         }
+
+        return $status_class;
+
     }
 
-    public function getSetting($key)
+    public function getEnabled(RoleModel $role)
     {
+        $settings = $this->getSetting($role->role_id, 'enabled');
+        if($settings === 1) {
+            return lang('re.role.enabled');
+        }
 
+        return lang('re.role.disabled');
+    }
+
+    /**
+     * @param int $role_id
+     * @param string $key
+     * @param $default
+     * @return false|mixed
+     */
+    public function getSetting(int $role_id, string $key, $default = false)
+    {
+        $settings = $this->getSettings($role_id);
+        if($settings instanceof RoleExpireModel) {
+            $arr = $settings->toArray();
+            if(array_key_exists($key, $arr)) {
+                return $arr[$key];
+            }
+        }
+
+        return $default;
     }
 
     /**
@@ -61,7 +104,10 @@ class RolesService
 
             if($settings->count() == 0) {
                 $settings = $this->addSettings($role_id);
+            } else {
+                $settings = $settings->first();
             }
+
         }
 
         return $settings;

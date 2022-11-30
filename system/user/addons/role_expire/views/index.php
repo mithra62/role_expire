@@ -6,7 +6,7 @@
     <fieldset class="tbl-search right">
         <a class="btn tn action" href="<?php echo ee('CP/URL')->make('addons/settings/cartthrob_subscriptions/subscriptions/create'); ?>"><?php echo lang('ct.sub.new'); ?></a>
     </fieldset>
-    <h1><?php echo lang('ct.sub.subscriptions'); ?></h1>
+    <h1><?php echo lang('re.header.list_role_expire'); ?></h1>
     <div class="app-notice-wrap">
         <?php echo ee('CP/Alert')->get('items-table'); ?>
     </div>
