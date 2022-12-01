@@ -28,4 +28,6 @@ $lang = [
     're.error.role_not_found' => 'Role Not Found',
 
     're.success.role_edited' => 'Role Expire Edited',
+
+    're.member_role_expired_error' => 'This account has expired and you are no longer able to continue using this site.',
 ];

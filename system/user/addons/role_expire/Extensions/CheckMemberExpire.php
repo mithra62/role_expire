@@ -42,12 +42,11 @@ class CheckMemberExpire extends AbstractRoute
                 if ($expire_data->count() == 1) {
                     $settings = $expire_data->first();
                     if($settings->enabled()
-                        && in_array($group_id, $this->settings['member_expire_member_groups'])
-                        && $this->settings['member_expire_ttl'] != '0'
+                        && $settings->ttl != '0'
                     ) {
-                        $expire_date = $session->userdata('join_date')+$this->settings['member_expire_ttl'];
+                        $expire_date = $session->userdata('join_date')+$settings->ttl;
                         if(time() >= $expire_date) {
-                            show_error(lang('member_account_expired_error'));
+                            show_error(lang('re.member_role_expired_error'));
                             exit;
                         }
                     }
