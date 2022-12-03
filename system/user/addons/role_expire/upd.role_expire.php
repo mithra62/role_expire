@@ -21,7 +21,12 @@ class Role_expire_upd extends Installer
     /**
      * @var string
      */
-    protected $settings_table = 'role_expire';
+    protected string $settings_table = 'role_expire';
+
+    /**
+     * @var string
+     */
+    protected string $expired_members_table = 'role_expire_members';
 
     /**
      * @var string[][]
@@ -52,7 +57,10 @@ class Role_expire_upd extends Installer
         parent::install();
         $this->activate_extension();
 
+        ee()->load->dbforge();
         $this->addSettingsTable();
+        $this->addExpiredMembersTable();
+        $this->portLegacyData();
 
         return true;
     }
@@ -75,9 +83,14 @@ class Role_expire_upd extends Installer
     public function uninstall()
     {
         parent::uninstall();
+
+        ee()->load->dbforge();
         if (ee()->db->table_exists($this->settings_table)) {
-            ee()->load->dbforge();
             ee()->dbforge->drop_table($this->settings_table);
+        }
+
+        if (ee()->db->table_exists($this->expired_members_table)) {
+            ee()->dbforge->drop_table($this->expired_members_table);
         }
 
         $this->disable_extension();
@@ -88,9 +101,8 @@ class Role_expire_upd extends Installer
     /**
      * @return void
      */
-    protected function addSettingsTable()
+    protected function addSettingsTable(): void
     {
-        ee()->load->dbforge();
         $fields = [
             'id' => [
                 'type' => 'int',
@@ -128,5 +140,56 @@ class Role_expire_upd extends Installer
         ee()->dbforge->add_field($fields);
         ee()->dbforge->add_key('id', true);
         ee()->dbforge->create_table($this->settings_table, true);
+    }
+
+    /**
+     * @return void
+     */
+    protected function addExpiredMembersTable(): void
+    {
+        $fields = [
+            'id' => [
+                'type' => 'int',
+                'constraint' => 10,
+                'unsigned' => true,
+                'null' => false,
+                'auto_increment'=> true
+            ],
+            'member_id'	=> [
+                'type' => 'int',
+                'constraint' => 10,
+                'null' => false,
+                'default' => '0'
+            ],
+            'date_registered'	=> [
+                'type' => 'int',
+                'constraint' => 10,
+                'null' => false,
+                'default' => '0'
+            ],
+            'date_activated'	=> [
+                'type' => 'int',
+                'constraint' => 10,
+                'null' => false,
+                'default' => '0'
+            ],
+        ];
+
+        ee()->dbforge->add_field($fields);
+        ee()->dbforge->add_key('id', true);
+        ee()->dbforge->create_table($this->expired_members_table, true);
+    }
+
+    protected function portLegacyData()
+    {
+        $legacy_members = ee()->db->select()->from('securitee_members')->get();
+        if ($legacy_members instanceof CI_DB_mysqli_result) {
+            if($legacy_members->num_rows() >= 1) {
+                foreach($legacy_members->result_array() AS $row)
+                {
+                    ee()->db->insert($this->expired_members_table, $row);
+                }
+            }
+        }
     }
 }
