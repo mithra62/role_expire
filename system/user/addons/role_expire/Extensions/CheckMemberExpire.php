@@ -44,7 +44,7 @@ class CheckMemberExpire extends AbstractRoute
                     if($settings->enabled()
                         && $settings->ttl != '0'
                     ) {
-                        $expire_date = $session->userdata('join_date')+$settings->ttl;
+                        $expire_date = $session->userdata('join_date') + $settings->ttl;
                         if(time() >= $expire_date) {
                             show_error(lang('re.member_role_expired_error'));
                             exit;

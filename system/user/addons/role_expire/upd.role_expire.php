@@ -129,6 +129,40 @@ class Role_expire_upd extends Installer
                 'null' => false,
                 'default' => '0'
             ],
+            'expired_role' => [
+                'type' => 'int',
+                'constraint' => 10,
+                'null' => true,
+                'default' => '0'
+            ],
+            'notify_time'  => [
+                'type' => 'int',
+                'constraint' => 10,
+                'null' => true,
+                'default' => '0'
+            ],
+            'notify_to'  => [
+                'type' => 'varchar',
+                'constraint' => 255,
+                'null' => true,
+                'default' => '0'
+            ],
+            'notify_subject'  => [
+                'type' => 'varchar',
+                'constraint' => 255,
+                'null' => true,
+                'default' => '0'
+            ],
+            'notify_body'  => [
+                'type' => 'longtext',
+                'null' => true,
+            ],
+            'notify_enabled'  => [
+                'type' => 'int',
+                'constraint' => 1,
+                'null' => false,
+                'default' => '0'
+            ],
             'enabled' => [
                 'type' => 'int',
                 'constraint' => 1,

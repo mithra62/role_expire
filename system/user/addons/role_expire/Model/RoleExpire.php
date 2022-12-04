@@ -18,8 +18,18 @@ class RoleExpire extends Model
     protected $ttl;
     protected $enabled;
     protected $ttl_custom;
+    protected $expired_role;
+    protected $notify_time;
+    protected $notify_to;
+    protected $notify_subject;
+    protected $notify_body;
+    protected $notify_enabled;
+
     protected static $_validation_rules = [
-        'ttl' => 'whenTtlIs[custom]|required'
+        'ttl' => 'whenTtlIs[custom]|required',
+        'notify_subject' => 'whenNotificationIs[1]|required',
+        'notify_to' => 'whenNotificationIs[1]|required',
+        'notify_body' => 'whenNotificationIs[1]|required',
     ];
 
     /**
@@ -38,7 +48,11 @@ class RoleExpire extends Model
         $validator = ee('Validation')->make(self::$_validation_rules);
         $data = $this->toArray();
         $validator->defineRule('whenTtlIs', function ($key, $value, $parameters, $rule) use ($data) {
-            return ($data['ttl'] == $parameters[0]) ? true : $rule->skip();
+            return ($data['ttl'] == $parameters[0] || $data['ttl_custom'] == '') ? true : $rule->skip();
+        });
+
+        $validator->defineRule('whenNotificationIs', function ($key, $value, $parameters, $rule) use ($data) {
+            return ($data['notify_enabled'] == $parameters[0]) ? true : $rule->skip();
         });
 
         return $validator;
