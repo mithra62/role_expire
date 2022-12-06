@@ -28,31 +28,7 @@ class CheckMemberExpire extends AbstractRoute
                 return $session;
             }
 
-            $roles = $member->Roles;
-            if (!$roles instanceof Collection) {
-                return $session;
-            }
-
-            foreach($roles AS $role)
-            {
-                $expire_data = ee('Model')
-                    ->get('role_expire:Settings')
-                    ->filter('role_id', $role->role_id);
-
-                if ($expire_data->count() == 1) {
-                    $settings = $expire_data->first();
-                    if($settings->enabled()
-                        && $settings->ttl != '0'
-                    ) {
-                        $expire_date = $session->userdata('join_date') + $settings->ttl;
-                        if(time() >= $expire_date) {
-                            show_error(lang('re.member_role_expired_error'));
-                            exit;
-                        }
-                    }
-                }
-            }
-
+            ee('role_expire:RolesService')->processMemberRoleCheck($member);
         }
 
         return $session;

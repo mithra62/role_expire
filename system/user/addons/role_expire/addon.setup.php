@@ -13,6 +13,7 @@ return [
     // Advanced settings
     'models' => [
         'Settings' => 'Model\RoleExpire',
+        'Member' => 'Model\Member',
     ],
     'services.singletons' => [
         'RolesService' => function ($addon) {

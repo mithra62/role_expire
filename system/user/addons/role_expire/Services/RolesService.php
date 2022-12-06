@@ -2,7 +2,10 @@
 namespace RoleExpire\Services;
 
 use ExpressionEngine\Model\Role\Role AS RoleModel;
+use ExpressionEngine\Service\Model\Collection;
+use RoleExpire\Model\Member;
 use RoleExpire\Model\RoleExpire AS RoleExpireModel;
+use ExpressionEngine\Model\Member\Member AS MemberModel;
 
 class RolesService
 {
@@ -131,5 +134,107 @@ class RolesService
         }
 
         return null;
+    }
+
+    /**
+     * @param MemberModel $member
+     * @return void
+     */
+    public function processMemberRoleCheck(MemberModel $member)
+    {
+        $roles = $member->Roles;
+        if ($roles instanceof Collection) {
+            foreach($roles AS $role)
+            {
+                $this->processRoleCheck($role->role_id, $member);
+            }
+        }
+
+        if ($member->PrimaryRole->role_id) {
+            $this->processRoleCheck($member->PrimaryRole->role_id, $member);
+        }
+    }
+
+    /**
+     * @param int $role_id
+     * @param MemberModel $member
+     * @return void
+     */
+    protected function processRoleCheck(int $role_id, MemberModel $member): void
+    {
+        $expire_data = ee('Model')
+            ->get('role_expire:Settings')
+            ->filter('role_id', $role_id);
+
+        if ($expire_data->count() == 1) {
+            $settings = $expire_data->first();
+            $ttl = $settings->ttl != 'custom' ? $settings->ttl  : $settings->ttl_custom;
+            if($settings->enabled() &&
+                $ttl != '0'
+            ) {
+                $join_date = $this->getJoinDate($member);
+                $expire_date = $join_date + $ttl ;
+                if(time() >= $expire_date) {
+                    $this->updateRole($member, $role_id, $settings->expired_role);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param MemberModel $member
+     * @return mixed
+     */
+    protected function getJoinDate(MemberModel $member)
+    {
+        $join_data = ee('Model')
+            ->get('role_expire:Member')
+            ->filter('member_id', $member->member_id);
+
+        if($join_data->count() == 0) {
+            $this->createJoinData($member);
+            $join_data = ee('Model')
+                ->get('role_expire:Member')
+                ->filter('member_id', $member->member_id);
+        }
+
+        $join_data->first();
+        return $join_data->date_registered;
+    }
+
+    /**
+     * @param MemberModel $member
+     * @return mixed
+     */
+    protected function createJoinData(MemberModel $member)
+    {
+        $join_data = ee('Model')
+            ->make('role_expire:Member');
+
+        $data = [
+            'member_id' => $member->member_id,
+            'date_registered' => $member->join_date,
+            'date_activated' => $member->join_date,
+        ];
+
+        $join_data->set($data);
+        return $join_data->save();
+    }
+
+    /**
+     * @param MemberModel $member
+     * @param $from
+     * @param $to
+     * @return void
+     */
+    protected function updateRole(MemberModel $member, $from, $to)
+    {
+        if($member->PrimaryRole->role_id == $from) {
+            ee()->db->update('members', ['role_id' => $to], ['member_id'=> $member->member_id]);
+        } else {
+            ee()->db->delete('members_roles', ['role_id' => $from, 'member_id' => $member->member_id]);
+            ee()->db->insert('members_roles', ['role_id' => $to, 'member_id' => $member->member_id]);
+        }
+
     }
 }
