@@ -41,10 +41,6 @@ class Edit extends AbstractRoute
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $settings = ee('role_expire:RolesService')->getSettings($id);
-            if(ee()->input->post('ttl') == 'custom') {
-                $_POST['ttl'] = ee()->input->post('custom_ttl');
-            }
-
             $settings->set($_POST);
             $result = $settings->validate();
             if ($result->isValid()) {

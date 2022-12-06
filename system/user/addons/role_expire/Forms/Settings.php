@@ -61,10 +61,10 @@ class Settings extends AbstractForm
             ->setChoices($ttl_options)
             ->set('group_toggle', ['custom' => 'custom']);
 
-        $field = $field_set->getField('custom_ttl', 'text')
+        $field = $field_set->getField('ttl_custom', 'text')
             ->setGroup('custom')
             ->setValue($ttl_custom);
-        $field->setNote(lang('re.form.note.custom_ttl'));
+        $field->setNote(lang('re.form.note.ttl_custom'));
 
         //notifications
         $field_group = $form->getGroup('re.form.header.notification');

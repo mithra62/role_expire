@@ -125,37 +125,38 @@ class Role_expire_upd extends Installer
             ],
             'ttl_custom' => [
                 'type' => 'int',
-                'constraint' => 1,
-                'null' => false,
-                'default' => '0'
+                'constraint' => 10,
+                'null' => true,
+                'default' => null
             ],
             'expired_role' => [
                 'type' => 'int',
                 'constraint' => 10,
                 'null' => true,
-                'default' => '0'
+                'default' => null
             ],
             'notify_time'  => [
                 'type' => 'int',
                 'constraint' => 10,
                 'null' => true,
-                'default' => '0'
+                'default' => null
             ],
             'notify_to'  => [
                 'type' => 'varchar',
                 'constraint' => 255,
                 'null' => true,
-                'default' => '0'
+                'default' => null
             ],
             'notify_subject'  => [
                 'type' => 'varchar',
                 'constraint' => 255,
                 'null' => true,
-                'default' => '0'
+                'default' => null
             ],
             'notify_body'  => [
                 'type' => 'longtext',
                 'null' => true,
+                'default' => null
             ],
             'notify_enabled'  => [
                 'type' => 'int',
@@ -214,7 +215,10 @@ class Role_expire_upd extends Installer
         ee()->dbforge->create_table($this->expired_members_table, true);
     }
 
-    protected function portLegacyData()
+    /**
+     * @return void
+     */
+    protected function portLegacyData(): void
     {
         $legacy_members = ee()->db->select()->from('securitee_members')->get();
         if ($legacy_members instanceof CI_DB_mysqli_result) {
