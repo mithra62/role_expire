@@ -3,12 +3,22 @@ namespace RoleExpire\Forms;
 
 use ExpressionEngine\Library\CP\Form\AbstractForm;
 use ExpressionEngine\Model\Role\Role AS RoleModel;
+use ExpressionEngine\Service\Validation\Validator;
+
 class Settings extends AbstractForm
 {
     /**
      * @var RoleModel|null
      */
     protected ?RoleModel $role = null;
+
+    protected $rules = [
+        'ttl' => 'required',
+        'ttl_custom' => 'whenTtlIs[custom]|required|isNaturalNoZero',
+        'notify_subject' => 'whenNotificationIs[1]|required',
+        'notify_to' => 'whenNotificationIs[1]|required',
+        'notify_body' => 'whenNotificationIs[1]|required',
+    ];
 
     /**
      * @return array
@@ -40,13 +50,9 @@ class Settings extends AbstractForm
         $field->setValue($this->get('expired_role'))
             ->setChoices($this->roleOptions());
 
-        $ttl_custom = '';
         $ttl_options = ee('role_expire:RolesService')->getTtlOptions();
         $ttl = $this->get('ttl');
         $ttl_custom = $this->get('ttl_custom');
-        if($ttl && !array_key_exists($ttl, $ttl_options)) {
-            $ttl = 'custom';
-        }
 
         $field_set = $field_group->getFieldSet('re.form.ttl');
         $field_set->setDesc('re.form.desc.ttl');
@@ -75,17 +81,17 @@ class Settings extends AbstractForm
         $field_set = $field_group->getFieldSet('re.form.notify_to');
         $field_set->setDesc('re.form.note.notify_to');
         $field = $field_set->getField('notify_to', 'text')
-            ->setValue($ttl_custom);
+            ->setValue($this->get('notify_to'));
 
         $field_set = $field_group->getFieldSet('re.form.notify_subject');
         $field_set->setDesc('re.form.note.notify_subject');
         $field = $field_set->getField('notify_subject', 'text')
-            ->setValue($ttl_custom);
+            ->setValue($this->get('notify_subject'));
 
         $field_set = $field_group->getFieldSet('re.form.notify_body');
         $field_set->setDesc('re.form.note.notify_body');
         $field = $field_set->getField('notify_body', 'textarea')
-            ->setValue($ttl_custom);
+            ->setValue($this->get('notify_body'));
 
         return $form->toArray();
     }
@@ -114,6 +120,12 @@ class Settings extends AbstractForm
     protected function roleOptions(): array
     {
         $options = ['' => ' '] + parent::roleOptions();
+        foreach($options AS $key => $value) {
+            if ($key == $this->getRole()->role_id || $key == 1) {
+                unset($options[$key]);
+            }
+        }
+
         return $options;
     }
 
@@ -133,5 +145,24 @@ class Settings extends AbstractForm
         }
 
         return $value;
+    }
+
+
+    /**
+     * @return Validator
+     */
+    public function getValidator(): Validator
+    {
+        $validator = ee('Validation')->make(self::$_validation_rules);
+        $data =
+        $validator->defineRule('whenTtlIs', function ($key, $value, $parameters, $rule) use ($data) {
+            return ($data['ttl'] == $parameters[0]) ? true : $rule->skip();
+        });
+
+        $validator->defineRule('whenNotificationIs', function ($key, $value, $parameters, $rule) use ($data) {
+            return ($data['notify_enabled'] == $parameters[0]) ? true : $rule->skip();
+        });
+
+        return $validator;
     }
 }
