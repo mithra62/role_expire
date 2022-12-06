@@ -198,8 +198,7 @@ class RolesService
                 ->filter('member_id', $member->member_id);
         }
 
-        $join_data->first();
-        return $join_data->date_registered;
+        return $join_data->first()->date_registered;
     }
 
     /**
