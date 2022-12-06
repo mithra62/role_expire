@@ -53,11 +53,11 @@ class RoleExpire extends Model
         $validator = ee('Validation')->make(self::$_validation_rules);
         $data = $_POST;
         $validator->defineRule('whenTtlIs', function ($key, $value, $parameters, $rule) use ($data) {
-            return ($data['ttl'] == $parameters[0]) ? true : $rule->skip();
+            return (isset($data['ttl']) && $data['ttl'] == $parameters[0]) ? true : $rule->skip();
         });
 
         $validator->defineRule('whenNotificationIs', function ($key, $value, $parameters, $rule) use ($data) {
-            return ($data['notify_enabled'] == $parameters[0]) ? true : $rule->skip();
+            return (isset($data['notify_enabled']) && $data['notify_enabled'] == $parameters[0]) ? true : $rule->skip();
         });
 
         return $validator;

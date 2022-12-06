@@ -46,6 +46,16 @@ class Role_expire_upd extends Installer
             'method' => 'check_member_expire',
             'hook' => 'sessions_end',
             'priority' => 10,
+        ],
+        [
+            'method' => 'member_delete',
+            'hook' => 'member_delete',
+            'priority' => 10,
+        ],
+        [
+            'method' => 'check_on_login',
+            'hook' => 'member_member_login_single',
+            'priority' => 10,
         ]
     ];
 
