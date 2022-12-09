@@ -9,8 +9,14 @@ use ExpressionEngine\Model\Member\Member AS MemberModel;
 
 class RolesService
 {
+    /**
+     * @var array
+     */
     protected array $settings = [];
 
+    /**
+     * @var array|string[]
+     */
     protected array $ttl_options = [
         '0' => 'Never',
         '1800' => '30 Minutes',
@@ -28,11 +34,50 @@ class RolesService
     ];
 
     /**
+     * @var array|string[]
+     */
+    protected array $email_time_options = [
+        '86400' => '1 Day',
+        '172800' => '2 Days',
+        '259200' => '3 Days',
+        '345600' => '4 Days',
+        '432000' => '5 Days',
+        '518400' => '6 Days',
+        '604800' => '7 Days',
+        '1209600' => '14 Days',
+        '2592000' => '30 Days',
+    ];
+
+    /**
+     * @var array|string[]
+     */
+    protected array $email_format_options = [
+        'html' => 'HTML',
+        'text' => 'Text',
+    ];
+
+    /**
      * @return array|string[]
      */
     public function getTtlOptions(): array
     {
         return $this->ttl_options;
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getEmailFormatOptions(): array
+    {
+        return $this->email_format_options;
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getEmailTimeOptions(): array
+    {
+        return $this->email_time_options;
     }
 
     /**
@@ -128,10 +173,15 @@ class RolesService
         $settings->role_id = $role_id;
         $settings->ttl = 0;
         $settings->enabled = 0;
+        $settings->expired_role = 0;
+        $settings->notify_enabled = 0;
         $result = $settings->validate();
         if ($result->isValid()) {
             return $settings->save();
         }
+
+        print_r($result);
+        exit;
 
         return null;
     }

@@ -31,6 +31,10 @@ $lang = [
     're.form.note.notify_subject' => 'You can use basic email variables as template tags.',
     're.form.notify_body' => 'Email Body',
     're.form.note.notify_body' => 'You can use basic email variables as template tags.',
+    're.form.notify_email_format' => 'Email Format',
+    're.form.desc.notify_email_format' => 'Whether to send the email in plain text or full HTML',
+    're.form.notify_ttl' => 'Notify Before Expire',
+    're.form.desc.notify_ttl' => 'How soon before an account expires do you want to send a notification out?',
 
     're.form.desc.role_name' => 'The colloquial name for the Member Role we\'re modifying',
     're.form.desc.ttl' => 'How long do you want Members with this Role to stay active on the site?',

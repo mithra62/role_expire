@@ -4,10 +4,11 @@ namespace RoleExpire\Module\Actions;
 
 use ExpressionEngine\Service\Addon\Controllers\Action\AbstractRoute;
 
-class ExampleAction extends AbstractRoute
+class MemberNotificationAction extends AbstractRoute
 {
     public function process()
     {
-        // Process action
+        echo 'hjgdf';
+        exit;
     }
 }

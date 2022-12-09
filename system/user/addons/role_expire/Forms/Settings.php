@@ -50,7 +50,7 @@ class Settings extends AbstractForm
         $field->setValue($this->get('expired_role'))
             ->setChoices($this->roleOptions());
 
-        $ttl_options = ee('role_expire:RolesService')->getTtlOptions();
+        $options = ee('role_expire:RolesService')->getTtlOptions();
         $ttl = $this->get('ttl');
         $ttl_custom = $this->get('ttl_custom');
 
@@ -58,7 +58,7 @@ class Settings extends AbstractForm
         $field_set->setDesc('re.form.desc.ttl');
         $field = $field_set->getField('ttl', 'select');
         $field->setValue($ttl)
-            ->setChoices($ttl_options)
+            ->setChoices($options)
             ->set('group_toggle', ['custom' => 'custom']);
 
         $field = $field_set->getField('ttl_custom', 'text')
@@ -78,6 +78,13 @@ class Settings extends AbstractForm
                 '0' => 'No',
             ]);
 
+        $options = ee('role_expire:RolesService')->getEmailTimeOptions();
+        $field_set = $field_group->getFieldSet('re.form.notify_ttl');
+        $field_set->setDesc('re.form.desc.notify_ttl');
+        $field = $field_set->getField('notify_ttl', 'select');
+        $field->setValue($ttl)
+            ->setChoices($options);
+
         $field_set = $field_group->getFieldSet('re.form.notify_to');
         $field_set->setDesc('re.form.note.notify_to');
         $field = $field_set->getField('notify_to', 'text')
@@ -87,6 +94,13 @@ class Settings extends AbstractForm
         $field_set->setDesc('re.form.note.notify_subject');
         $field = $field_set->getField('notify_subject', 'text')
             ->setValue($this->get('notify_subject'));
+
+        $options = ee('role_expire:RolesService')->getEmailFormatOptions();
+        $field_set = $field_group->getFieldSet('re.form.notify_format');
+        $field_set->setDesc('re.form.desc.notify_format');
+        $field = $field_set->getField('notify_format', 'select');
+        $field->setValue($this->get('notify_format'))
+            ->setChoices($options);
 
         $field_set = $field_group->getFieldSet('re.form.notify_body');
         $field_set->setDesc('re.form.note.notify_body');
@@ -153,8 +167,8 @@ class Settings extends AbstractForm
      */
     public function getValidator(): Validator
     {
-        $validator = ee('Validation')->make(self::$_validation_rules);
-        $data =
+        $validator = ee('Validation')->make($this->rules);
+        $data = $this->data;
         $validator->defineRule('whenTtlIs', function ($key, $value, $parameters, $rule) use ($data) {
             return ($data['ttl'] == $parameters[0]) ? true : $rule->skip();
         });

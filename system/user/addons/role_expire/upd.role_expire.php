@@ -34,7 +34,7 @@ class Role_expire_upd extends Installer
     public $actions = [
         [
             'class' => 'Role_expire',
-            'method' => 'ExampleAction'
+            'method' => 'member_notification_action'
         ]
     ];
 
@@ -145,11 +145,17 @@ class Role_expire_upd extends Installer
                 'null' => true,
                 'default' => null
             ],
-            'notify_time'  => [
+            'notify_ttl'  => [
                 'type' => 'int',
                 'constraint' => 10,
                 'null' => true,
                 'default' => null
+            ],
+            'notify_format'  => [
+                'type' => 'varchar',
+                'constraint' => 10,
+                'null' => false,
+                'default' => 'html'
             ],
             'notify_to'  => [
                 'type' => 'varchar',

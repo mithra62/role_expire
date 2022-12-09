@@ -9,6 +9,7 @@ class MemberDelete extends AbstractRoute
     {
 
         print_r($member_ids);
+        exit;
         return $member_ids;
 
     }

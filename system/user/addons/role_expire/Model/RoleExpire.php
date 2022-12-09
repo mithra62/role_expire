@@ -19,7 +19,8 @@ class RoleExpire extends Model
     protected $enabled;
     protected $ttl_custom;
     protected $expired_role;
-    protected $notify_time;
+    protected $notify_ttl;
+    protected $notify_format;
     protected $notify_to;
     protected $notify_subject;
     protected $notify_body;
@@ -32,10 +33,6 @@ class RoleExpire extends Model
         'notify_subject' => 'whenNotificationIs[1]|required',
         'notify_to' => 'whenNotificationIs[1]|required',
         'notify_body' => 'whenNotificationIs[1]|required',
-    ];
-
-    protected static $_events = [
-        'beforeUpdate',
     ];
 
     /**
@@ -62,13 +59,6 @@ class RoleExpire extends Model
         });
 
         return $validator;
-    }
-
-    public function onBeforeUpdate()
-    {
-        if($this->getRawProperty('ttl') == 'custom') {
-
-        }
     }
 
 }
