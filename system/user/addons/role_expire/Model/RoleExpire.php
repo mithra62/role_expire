@@ -44,6 +44,14 @@ class RoleExpire extends Model
     }
 
     /**
+     * @return bool
+     */
+    public function notifyEnabled(): bool
+    {
+        return $this->notify_enabled === 1;
+    }
+
+    /**
      * @return Validator
      */
     public function getValidator(): Validator

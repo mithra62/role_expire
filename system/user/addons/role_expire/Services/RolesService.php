@@ -6,6 +6,7 @@ use ExpressionEngine\Service\Model\Collection;
 use RoleExpire\Model\Member;
 use RoleExpire\Model\RoleExpire AS RoleExpireModel;
 use ExpressionEngine\Model\Member\Member AS MemberModel;
+use CI_DB_result;
 
 class RolesService
 {
@@ -99,7 +100,7 @@ class RolesService
      * @param RoleModel $role
      * @return string|void
      */
-    public function getStatusCss(RoleModel $role)
+    public function getStatusCss(RoleModel $role): string
     {
         $status_class = 'st-pending';
         if ($this->getSetting($role->role_id, 'enabled') === 1) {
@@ -110,7 +111,11 @@ class RolesService
 
     }
 
-    public function getEnabled(RoleModel $role)
+    /**
+     * @param RoleModel $role
+     * @return string
+     */
+    public function getEnabled(RoleModel $role): string
     {
         $settings = $this->getSetting($role->role_id, 'enabled');
         if($settings === 1) {
@@ -180,9 +185,6 @@ class RolesService
             return $settings->save();
         }
 
-        print_r($result);
-        exit;
-
         return null;
     }
 
@@ -190,7 +192,7 @@ class RolesService
      * @param MemberModel $member
      * @return void
      */
-    public function processMemberRoleCheck(MemberModel $member)
+    public function processMemberRoleCheck(MemberModel $member): void
     {
         $roles = $member->Roles;
         if ($roles instanceof Collection) {
@@ -233,9 +235,9 @@ class RolesService
 
     /**
      * @param MemberModel $member
-     * @return mixed
+     * @return int
      */
-    protected function getJoinDate(MemberModel $member)
+    protected function getJoinDate(MemberModel $member): int
     {
         $join_data = ee('Model')
             ->get('role_expire:Member')
@@ -276,7 +278,7 @@ class RolesService
      * @param $to
      * @return void
      */
-    protected function updateRole(MemberModel $member, $from, $to)
+    protected function updateRole(MemberModel $member, $from, $to): void
     {
         if($member->PrimaryRole->role_id == $from) {
             ee()->db->update('members', ['role_id' => $to], ['member_id'=> $member->member_id]);
@@ -284,6 +286,34 @@ class RolesService
             ee()->db->delete('members_roles', ['role_id' => $from, 'member_id' => $member->member_id]);
             ee()->db->insert('members_roles', ['role_id' => $to, 'member_id' => $member->member_id]);
         }
+    }
 
+    /**
+     * @param int $role_id
+     * @param int $notify_ttl
+     * @return array
+     */
+    public function getExpiringMemberIds(int $role_id, int $ttl, int $notify_ttl): array
+    {
+        $query = ee()->db->select('member_id')->from('members')->where(['role_id' => $role_id])->get();
+        $member_ids = [];
+        if($query instanceof CI_DB_result && $query->num_rows() >= 1) {
+            foreach($query->result_array() AS $row) {
+                $member_ids[$row['member_id']] = $row['member_id'];
+            }
+        }
+
+        $query = ee()->db->select('member_id')->from('members_roles')->where(['role_id' => $role_id])->get();
+        foreach($query->result_array() AS $row) {
+            $member_ids[$row['member_id']] = $row['member_id'];
+        }
+
+        $now = time() + $notify_ttl;
+        $join_data = ee('Model')
+            ->get('role_expire:Member')
+            ->filter('member_id', 'IN', $member_ids)
+            ->filter('date_activated', '<=', );
+
+        return $member_ids;
     }
 }
