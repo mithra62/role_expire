@@ -13,4 +13,13 @@ class Member extends Model
     protected $member_id;
     protected $date_registered;
     protected $date_activated;
+
+    protected static $_relationships = [
+        'Member' => [
+            'type' => 'BelongsTo',
+            'model' => 'ee:Member',
+            'from_key' => 'member_id',
+            'to_key' => 'member_id',
+        ],
+    ];
 }

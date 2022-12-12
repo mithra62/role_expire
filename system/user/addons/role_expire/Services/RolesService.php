@@ -293,27 +293,38 @@ class RolesService
      * @param int $notify_ttl
      * @return array
      */
-    public function getExpiringMemberIds(int $role_id, int $ttl, int $notify_ttl): array
+    public function getExpiringMembers(int $role_id, int $ttl, int $notify_ttl): array
     {
-        $query = ee()->db->select('member_id')->from('members')->where(['role_id' => $role_id])->get();
-        $member_ids = [];
+        $member_ids = $return = [];
+        $query = ee()->db->select('member_id')->from('members')->where(['role_id' => $role_id])->get(); //primary
         if($query instanceof CI_DB_result && $query->num_rows() >= 1) {
             foreach($query->result_array() AS $row) {
                 $member_ids[$row['member_id']] = $row['member_id'];
             }
         }
 
-        $query = ee()->db->select('member_id')->from('members_roles')->where(['role_id' => $role_id])->get();
+        $query = ee()->db->select('member_id')->from('members_roles')->where(['role_id' => $role_id])->get(); //secondary
         foreach($query->result_array() AS $row) {
             $member_ids[$row['member_id']] = $row['member_id'];
         }
 
-        $now = time() + $notify_ttl;
-        $join_data = ee('Model')
-            ->get('role_expire:Member')
-            ->filter('member_id', 'IN', $member_ids)
-            ->filter('date_activated', '<=', );
+        if($member_ids) {
+            $date = time() + ($ttl - $notify_ttl);
+            $join_data = ee('Model')
+                ->get('role_expire:Member')
+                ->filter('member_id', 'IN', $member_ids)
+                ->filter('date_activated', '<=', $date);
 
-        return $member_ids;
+            if ($join_data->count() >= 1) {
+                foreach($join_data->all() AS $member) {
+                    $return[$member->member_id] = $member->Member->toArray();
+                    $return[$member->member_id]['activated_date'] = $member->date_activated;
+                    $return[$member->member_id]['date_registered'] = $member->date_registered;
+                    $return[$member->member_id]['securitee_member_expiration'] = $member->date_activated + $ttl;
+                }
+            }
+        }
+
+        return $return;
     }
 }

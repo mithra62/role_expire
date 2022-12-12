@@ -82,7 +82,7 @@ class Settings extends AbstractForm
         $field_set = $field_group->getFieldSet('re.form.notify_ttl');
         $field_set->setDesc('re.form.desc.notify_ttl');
         $field = $field_set->getField('notify_ttl', 'select');
-        $field->setValue($ttl)
+        $field->setValue($this->get('notify_ttl', 0))
             ->setChoices($options);
 
         $field_set = $field_group->getFieldSet('re.form.notify_to');
