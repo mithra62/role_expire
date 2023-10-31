@@ -29,6 +29,7 @@ class RolesService
         '432000' => '5 Days',
         '604800' => '1 Week',
         '2592000' => '30 Days',
+        '5184000' => '60 Days',
         '15552000' => '6 Months',
         '31104000' => '1 Year',
         'custom' => 'Custom'

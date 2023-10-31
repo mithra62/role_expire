@@ -35,6 +35,4 @@ class Role_expire_ext extends Extension
     {
         return true;
     }
-
-
 }
