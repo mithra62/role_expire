@@ -197,8 +197,7 @@ class RolesService
     {
         $roles = $member->Roles;
         if ($roles instanceof Collection) {
-            foreach($roles AS $role)
-            {
+            foreach($roles AS $role) {
                 $this->processRoleCheck($role->role_id, $member);
             }
         }

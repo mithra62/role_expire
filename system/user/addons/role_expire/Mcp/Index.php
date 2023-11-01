@@ -60,7 +60,7 @@ class Index extends AbstractRoute
 
         $roles = ee('Model')
             ->get('ee:Role')
-            ->filter('role_id', '!=', 1);
+            ->filter('role_id', '>=', 5);
 
         $page = ((int)ee('Request')->get('page')) ?: 1;
         $offset = ($page - 1) * $this->per_page; // Offset is 0 indexed
