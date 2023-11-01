@@ -236,12 +236,13 @@ class Role_expire_upd extends Installer
      */
     protected function portLegacyData(): void
     {
-        $legacy_members = ee()->db->select()->from('securitee_members')->get();
-        if ($legacy_members instanceof CI_DB_mysqli_result) {
-            if($legacy_members->num_rows() >= 1) {
-                foreach($legacy_members->result_array() AS $row)
-                {
-                    ee()->db->insert($this->expired_members_table, $row);
+        if (ee()->db->table_exists('securitee_members')) {
+            $legacy_members = ee()->db->select()->from('securitee_members')->get();
+            if ($legacy_members instanceof CI_DB_mysqli_result) {
+                if ($legacy_members->num_rows() >= 1) {
+                    foreach ($legacy_members->result_array() as $row) {
+                        ee()->db->insert($this->expired_members_table, $row);
+                    }
                 }
             }
         }

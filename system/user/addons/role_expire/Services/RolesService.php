@@ -1,10 +1,10 @@
 <?php
-namespace RoleExpire\Services;
+namespace Mithra62\RoleExpire\Services;
 
 use ExpressionEngine\Model\Role\Role AS RoleModel;
 use ExpressionEngine\Service\Model\Collection;
-use RoleExpire\Model\Member;
-use RoleExpire\Model\RoleExpire AS RoleExpireModel;
+use Mithra62\RoleExpire\Model\Member;
+use Mithra62\RoleExpire\Model\RoleExpire AS RoleExpireModel;
 use ExpressionEngine\Model\Member\Member AS MemberModel;
 use CI_DB_result;
 
@@ -99,7 +99,7 @@ class RolesService
 
     /**
      * @param RoleModel $role
-     * @return string|void
+     * @return string
      */
     public function getStatusCss(RoleModel $role): string
     {

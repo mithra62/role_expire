@@ -1,6 +1,6 @@
 <?php
 
-namespace RoleExpire\Module\Tags;
+namespace Mithra62\RoleExpire\Module\Tags;
 
 use ExpressionEngine\Service\Addon\Controllers\Tag\AbstractRoute;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace RoleExpire\Mcp;
+namespace Mithra62\RoleExpire\Mcp;
 
 use ExpressionEngine\Service\Addon\Controllers\Mcp\AbstractRoute;
-use RoleExpire\Forms\Settings AS SettingsForm;
+use Mithra62\RoleExpire\Forms\Settings AS SettingsForm;
 
 class Edit extends AbstractRoute
 {

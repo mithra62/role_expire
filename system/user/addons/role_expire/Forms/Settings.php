@@ -1,5 +1,5 @@
 <?php
-namespace RoleExpire\Forms;
+namespace Mithra62\RoleExpire\Forms;
 
 use ExpressionEngine\Library\CP\Form\AbstractForm;
 use ExpressionEngine\Model\Role\Role AS RoleModel;

@@ -1,6 +1,6 @@
 <?php
 
-namespace RoleExpire\Mcp;
+namespace Mithra62\RoleExpire\Mcp;
 
 use ExpressionEngine\Service\Addon\Controllers\Mcp\AbstractRoute;
 use ExpressionEngine\Library\CP\Table;

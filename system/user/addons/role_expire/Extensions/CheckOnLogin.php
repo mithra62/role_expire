@@ -1,5 +1,5 @@
 <?php
-namespace RoleExpire\Extensions;
+namespace Mithra62\RoleExpire\Extensions;
 
 use ExpressionEngine\Model\Member\Member;
 use ExpressionEngine\Service\Addon\Controllers\Extension\AbstractRoute;

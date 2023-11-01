@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests>
+  <test className="Mithra62\RoleExpire\Tests\AddonSetupTest" methodName="testFileExists" prettifiedClassName="Addon Setup (Mithra62\RoleExpire\Tests\AddonSetup)" prettifiedMethodName="File exists" status="0" time="0.0031645" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\RoleExpire\Tests\AddonSetupTest" methodName="testAuthorValue" prettifiedClassName="Addon Setup (Mithra62\RoleExpire\Tests\AddonSetup)" prettifiedMethodName="Author value" status="0" time="0.0002584" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\RoleExpire\Tests\AddonSetupTest" methodName="testNameValue" prettifiedClassName="Addon Setup (Mithra62\RoleExpire\Tests\AddonSetup)" prettifiedMethodName="Name value" status="0" time="4.21E-5" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\RoleExpire\Tests\AddonSetupTest" methodName="testNamespaceValue" prettifiedClassName="Addon Setup (Mithra62\RoleExpire\Tests\AddonSetup)" prettifiedMethodName="Namespace value" status="0" time="3.85E-5" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\RoleExpire\Tests\AddonSetupTest" methodName="testSettingsValue" prettifiedClassName="Addon Setup (Mithra62\RoleExpire\Tests\AddonSetup)" prettifiedMethodName="Settings value" status="0" time="0.0001488" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\RoleExpire\Tests\AddonSetupTest" methodName="testVersionConstDefined" prettifiedClassName="Addon Setup (Mithra62\RoleExpire\Tests\AddonSetup)" prettifiedMethodName="Version const defined" status="0" time="3.18E-5" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\RoleExpire\Tests\AddonSetupTest" methodName="testVersionValue" prettifiedClassName="Addon Setup (Mithra62\RoleExpire\Tests\AddonSetup)" prettifiedMethodName="Version value" status="0" time="0.0001215" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\RoleExpire\Tests\LangTest" methodName="testLangFileExists" prettifiedClassName="Lang (Mithra62\RoleExpire\Tests\Lang)" prettifiedMethodName="Lang file exists" status="0" time="0.0001851" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\RoleExpire\Tests\LangTest" methodName="testLangFormat" prettifiedClassName="Lang (Mithra62\RoleExpire\Tests\Lang)" prettifiedMethodName="Lang format" status="0" time="0.0001013" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\RoleExpire\Tests\LangTest" methodName="testNameKeyExists" prettifiedClassName="Lang (Mithra62\RoleExpire\Tests\Lang)" prettifiedMethodName="Name key exists" status="0" time="0.000225" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\RoleExpire\Tests\LangTest" methodName="testDescKeyExists" prettifiedClassName="Lang (Mithra62\RoleExpire\Tests\Lang)" prettifiedMethodName="Desc key exists" status="0" time="4.04E-5" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\RoleExpire\Tests\LangTest" methodName="testSettingKeyExists" prettifiedClassName="Lang (Mithra62\RoleExpire\Tests\Lang)" prettifiedMethodName="Setting key exists" status="0" time="3.46E-5" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\RoleExpire\Tests\McpTest" methodName="testMcpFileExists" prettifiedClassName="Mcp (Mithra62\RoleExpire\Tests\Mcp)" prettifiedMethodName="Mcp file exists" status="0" time="0.0004844" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\RoleExpire\Tests\McpTest" methodName="testMcpObjectExists" prettifiedClassName="Mcp (Mithra62\RoleExpire\Tests\Mcp)" prettifiedMethodName="Mcp object exists" status="0" time="2.76E-5" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\Grid\Pagination\Tests\ModTest" methodName="testModuleFileExists" prettifiedClassName="Mod (Mithra62\Grid\Pagination\Tests\Mod)" prettifiedMethodName="Module file exists" status="0" time="0.0003091" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\Grid\Pagination\Tests\ModTest" methodName="testModuleObjectExists" prettifiedClassName="Mod (Mithra62\Grid\Pagination\Tests\Mod)" prettifiedMethodName="Module object exists" status="0" time="2.84E-5" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\Grid\Pagination\Tests\ModTest" methodName="testModInstance" prettifiedClassName="Mod (Mithra62\Grid\Pagination\Tests\Mod)" prettifiedMethodName="Mod instance" status="0" time="0.0001409" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\RoleExpire\Tests\UpdTest" methodName="testUpdFileExists" prettifiedClassName="Upd (Mithra62\RoleExpire\Tests\Upd)" prettifiedMethodName="Upd file exists" status="0" time="0.0004948" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\RoleExpire\Tests\UpdTest" methodName="testUpdObjectExists" prettifiedClassName="Upd (Mithra62\RoleExpire\Tests\Upd)" prettifiedMethodName="Upd object exists" status="0" time="2.69E-5" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\RoleExpire\Tests\UpdTest" methodName="testHasCpBackendPropertyExists" prettifiedClassName="Upd (Mithra62\RoleExpire\Tests\Upd)" prettifiedMethodName="Has cp backend property exists" status="0" time="0.0005471" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\RoleExpire\Tests\UpdTest" methodName="testCpBackendPropertyValue" prettifiedClassName="Upd (Mithra62\RoleExpire\Tests\Upd)" prettifiedMethodName="Cp backend property value" status="0" time="3.27E-5" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\RoleExpire\Tests\UpdTest" methodName="testPublishFieldsPropertyExists" prettifiedClassName="Upd (Mithra62\RoleExpire\Tests\Upd)" prettifiedMethodName="Publish fields property exists" status="0" time="3.03E-5" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\RoleExpire\Tests\UpdTest" methodName="testPublishFieldsPropertyValue" prettifiedClassName="Upd (Mithra62\RoleExpire\Tests\Upd)" prettifiedMethodName="Publish fields property value" status="0" time="3.28E-5" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\RoleExpire\Tests\UpdTest" methodName="testInstance" prettifiedClassName="Upd (Mithra62\RoleExpire\Tests\Upd)" prettifiedMethodName="Instance" status="0" time="5.42E-5" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\RoleExpire\Tests\UpdTest" methodName="testInstallMethodExists" prettifiedClassName="Upd (Mithra62\RoleExpire\Tests\Upd)" prettifiedMethodName="Install method exists" status="0" time="4.16E-5" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\RoleExpire\Tests\UpdTest" methodName="testUninstallMethodExists" prettifiedClassName="Upd (Mithra62\RoleExpire\Tests\Upd)" prettifiedMethodName="Uninstall method exists" status="0" time="3.74E-5" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Mithra62\RoleExpire\Tests\UpdTest" methodName="testUpdateMethodExists" prettifiedClassName="Upd (Mithra62\RoleExpire\Tests\Upd)" prettifiedMethodName="Update method exists" status="0" time="3.65E-5" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+</tests>

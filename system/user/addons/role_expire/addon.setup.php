@@ -1,14 +1,16 @@
 <?php
 
-use RoleExpire\Services\RolesService;
+use Mithra62\RoleExpire\Services\RolesService;
+
+const ROLE_EXPIRE_VERSION = '1.0.0';
 
 return [
-    'author'            => 'Eric Lamb',
+    'author'            => 'mithra62',
     'author_url'        => '',
     'name'              => 'Role Expire',
     'description'       => 'Allows for Member Roles to expire after a set number of seconds from creation',
-    'version'           => '1.0.0',
-    'namespace'         => 'RoleExpire',
+    'version'           => ROLE_EXPIRE_VERSION,
+    'namespace'         => 'Mithra62\RoleExpire',
     'settings_exist'    => true,
     // Advanced settings
     'models' => [
