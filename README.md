@@ -1,5 +1,5 @@
 # Role Expire
-Allows ExpressionEngine site administrators the ability to set a time limit on how long a particular member within specified role to have an active account.
+Allows ExpressionEngine site administrators the ability to set a time limit on how long a particular member within specified role to have an active account.Create time limited accounts.
 
 ## Features
 

@@ -329,6 +329,9 @@ class RolesService
         return $return;
     }
 
+    /**
+     * @return Builder
+     */
     public function getUsableRoles(): Builder
     {
         $settings = ee('Model')
