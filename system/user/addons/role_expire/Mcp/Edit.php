@@ -39,10 +39,10 @@ class Edit extends AbstractRoute
         $form->setRole($role);
         $vars = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
             $settings = ee('role_expire:RolesService')->getSettings($id);
+            $form->setData($_POST);
             $settings->set($_POST);
-            $result = $settings->validate();
+            $result = $form->validate($_POST);
             if ($result->isValid()) {
                 $settings->save();
                 ee('CP/Alert')->makeInline('shared-form')

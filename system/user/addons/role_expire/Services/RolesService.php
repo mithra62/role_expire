@@ -321,7 +321,7 @@ class RolesService
                     $return[$member->member_id] = $member->Member->toArray();
                     $return[$member->member_id]['activated_date'] = $member->date_activated;
                     $return[$member->member_id]['date_registered'] = $member->date_registered;
-                    $return[$member->member_id]['securitee_member_expiration'] = $member->date_activated + $ttl;
+                    $return[$member->member_id]['member_expiration'] = $member->date_activated + $ttl;
                 }
             }
         }
