@@ -1,0 +1,37 @@
+Addon Setup (Mithra62\RoleExpire\Tests\AddonSetup)
+ [x] File exists
+ [x] Author value
+ [x] Name value
+ [x] Namespace value
+ [x] Settings value
+ [x] Version const defined
+ [x] Version value
+
+Lang (Mithra62\RoleExpire\Tests\Lang)
+ [x] Lang file exists
+ [x] Lang format
+ [x] Name key exists
+ [x] Desc key exists
+ [x] Setting key exists
+
+Mcp (Mithra62\RoleExpire\Tests\Mcp)
+ [x] Mcp file exists
+ [x] Mcp object exists
+
+Mod (Mithra62\Grid\Pagination\Tests\Mod)
+ [x] Module file exists
+ [x] Module object exists
+ [x] Mod instance
+
+Upd (Mithra62\RoleExpire\Tests\Upd)
+ [x] Upd file exists
+ [x] Upd object exists
+ [x] Has cp backend property exists
+ [x] Cp backend property value
+ [x] Publish fields property exists
+ [x] Publish fields property value
+ [x] Instance
+ [x] Install method exists
+ [x] Uninstall method exists
+ [x] Update method exists
+

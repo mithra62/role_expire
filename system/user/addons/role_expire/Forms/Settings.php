@@ -1,5 +1,5 @@
 <?php
-namespace RoleExpire\Forms;
+namespace Mithra62\RoleExpire\Forms;
 
 use ExpressionEngine\Library\CP\Form\AbstractForm;
 use ExpressionEngine\Model\Role\Role AS RoleModel;
@@ -14,6 +14,7 @@ class Settings extends AbstractForm
 
     protected $rules = [
         'ttl' => 'required',
+        'expired_role' => 'required',
         'ttl_custom' => 'whenTtlIs[custom]|required|isNaturalNoZero',
         'notify_subject' => 'whenNotificationIs[1]|required',
         'notify_to' => 'whenNotificationIs[1]|required',

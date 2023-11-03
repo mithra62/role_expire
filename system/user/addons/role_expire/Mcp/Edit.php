@@ -1,9 +1,9 @@
 <?php
 
-namespace RoleExpire\Mcp;
+namespace Mithra62\RoleExpire\Mcp;
 
 use ExpressionEngine\Service\Addon\Controllers\Mcp\AbstractRoute;
-use RoleExpire\Forms\Settings AS SettingsForm;
+use Mithra62\RoleExpire\Forms\Settings AS SettingsForm;
 
 class Edit extends AbstractRoute
 {
@@ -39,10 +39,10 @@ class Edit extends AbstractRoute
         $form->setRole($role);
         $vars = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
             $settings = ee('role_expire:RolesService')->getSettings($id);
+            $form->setData($_POST);
             $settings->set($_POST);
-            $result = $settings->validate();
+            $result = $form->validate($_POST);
             if ($result->isValid()) {
                 $settings->save();
                 ee('CP/Alert')->makeInline('shared-form')

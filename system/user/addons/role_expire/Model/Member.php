@@ -1,6 +1,6 @@
 <?php
 
-namespace RoleExpire\Model;
+namespace Mithra62\RoleExpire\Model;
 
 use ExpressionEngine\Service\Model\Model;
 
