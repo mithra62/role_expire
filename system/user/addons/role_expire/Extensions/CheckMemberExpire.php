@@ -4,12 +4,9 @@ namespace Mithra62\RoleExpire\Extensions;
 
 use ExpressionEngine\Service\Addon\Controllers\Extension\AbstractRoute;
 use ExpressionEngine\Model\Member\Member;
-use ExpressionEngine\Service\Model\Collection;
 
 class CheckMemberExpire extends AbstractRoute
 {
-    protected $settings;
-
     /**
      * @param \EE_Session $session
      * @return void

@@ -6,6 +6,7 @@ use ExpressionEngine\Service\Model\Collection;
 use Mithra62\RoleExpire\Model\Member;
 use Mithra62\RoleExpire\Model\RoleExpire AS RoleExpireModel;
 use ExpressionEngine\Model\Member\Member AS MemberModel;
+use ExpressionEngine\Service\Model\Query\Builder;
 use CI_DB_result;
 
 class RolesService
@@ -316,7 +317,7 @@ class RolesService
                 ->filter('date_activated', '<=', $date);
 
             if ($join_data->count() >= 1) {
-                foreach($join_data->all() AS $member) {
+                foreach ($join_data->all() as $member) {
                     $return[$member->member_id] = $member->Member->toArray();
                     $return[$member->member_id]['activated_date'] = $member->date_activated;
                     $return[$member->member_id]['date_registered'] = $member->date_registered;
@@ -326,5 +327,30 @@ class RolesService
         }
 
         return $return;
+    }
+
+    public function getUsableRoles(): Builder
+    {
+        $settings = ee('Model')
+            ->get('role_expire:Settings')
+            ->filter('enabled', 1)
+            ->filter('expired_role', '!=', 0);
+
+        $avoid = [];
+        if($settings instanceof Builder && $settings->count() >= 1) {
+            foreach($settings->all() AS $setting) {
+                $avoid[] = $setting->expired_role;
+            }
+        }
+
+        $roles = ee('Model')
+            ->get('ee:Role')
+            ->filter('role_id', '>=', 5);
+
+        if($avoid) {
+            $roles->filter('role_id', 'NOT IN', $avoid);
+        }
+
+        return $roles;
     }
 }

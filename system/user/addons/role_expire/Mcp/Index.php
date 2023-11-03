@@ -58,9 +58,7 @@ class Index extends AbstractRoute
 
         $table->setNoResultsText(sprintf(lang('no_found'), lang('ct.re.expires')));
 
-        $roles = ee('Model')
-            ->get('ee:Role')
-            ->filter('role_id', '>=', 5);
+        $roles = ee('role_expire:RolesService')->getUsableRoles();
 
         $page = ((int)ee('Request')->get('page')) ?: 1;
         $offset = ($page - 1) * $this->per_page; // Offset is 0 indexed
