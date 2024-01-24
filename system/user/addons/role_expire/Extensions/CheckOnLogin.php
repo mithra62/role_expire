@@ -1,4 +1,5 @@
 <?php
+
 namespace Mithra62\RoleExpire\Extensions;
 
 use ExpressionEngine\Model\Member\Member;
@@ -13,7 +14,7 @@ class CheckOnLogin extends AbstractRoute
      */
     public function process(stdClass $hook_data): void
     {
-        if(isset($hook_data->member_id)) {
+        if (isset($hook_data->member_id)) {
             $member = ee('Model')
                 ->get('Member')
                 ->filter('member_id', $hook_data->member_id);

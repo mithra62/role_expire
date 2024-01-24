@@ -3,7 +3,7 @@
 namespace Mithra62\RoleExpire\Mcp;
 
 use ExpressionEngine\Service\Addon\Controllers\Mcp\AbstractRoute;
-use Mithra62\RoleExpire\Forms\Settings AS SettingsForm;
+use Mithra62\RoleExpire\Forms\Settings as SettingsForm;
 
 class Edit extends AbstractRoute
 {
@@ -11,7 +11,7 @@ class Edit extends AbstractRoute
 
     public function process($id = false)
     {
-        if($id == 1) {
+        if ($id == 1) {
             ee('CP/Alert')->makeInline('shared-form')
                 ->asIssue()
                 ->withTitle(lang('re.error.cannot_edit_super_admin'))
@@ -24,7 +24,7 @@ class Edit extends AbstractRoute
             ->get('ee:Role')
             ->filter('role_id', $id);
 
-        if($role->count() == 0) {
+        if ($role->count() == 0) {
             ee('CP/Alert')->makeInline('shared-form')
                 ->asIssue()
                 ->withTitle(lang('re.error.role_not_found'))

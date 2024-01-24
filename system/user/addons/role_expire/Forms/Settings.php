@@ -1,8 +1,9 @@
 <?php
+
 namespace Mithra62\RoleExpire\Forms;
 
 use ExpressionEngine\Library\CP\Form\AbstractForm;
-use ExpressionEngine\Model\Role\Role AS RoleModel;
+use ExpressionEngine\Model\Role\Role as RoleModel;
 use ExpressionEngine\Service\Validation\Validator;
 
 class Settings extends AbstractForm
@@ -135,7 +136,7 @@ class Settings extends AbstractForm
     protected function roleOptions(): array
     {
         $options = ['' => ' '] + parent::roleOptions();
-        foreach($options AS $key => $value) {
+        foreach ($options as $key => $value) {
             if ($key == $this->getRole()->role_id || $key == 1) {
                 unset($options[$key]);
             }
@@ -152,9 +153,9 @@ class Settings extends AbstractForm
     public function get(string $key = '', $default = '')
     {
         $value = ee()->input->post($key);
-        if(!$value) {
+        if (!$value) {
             $value = ee('role_expire:RolesService')->getSetting($this->getRole()->role_id, $key);
-            if(!$value) {
+            if (!$value) {
                 $value = parent::get($key, $default);
             }
         }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Mithra62\RoleExpire\Tests;
 
 use ExpressionEngine\Core\Provider;
@@ -11,7 +12,7 @@ class AddonSetupTest extends TestCase
      */
     public function testFileExists(): void
     {
-        $file_name = realpath(PATH_THIRD.'/role_expire/addon.setup.php');
+        $file_name = realpath(PATH_THIRD . '/role_expire/addon.setup.php');
         $this->assertNotNull($file_name);
     }
 

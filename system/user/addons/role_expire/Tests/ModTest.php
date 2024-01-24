@@ -3,13 +3,13 @@
 namespace Mithra62\Grid\Pagination\Tests;
 
 use PHPUnit\Framework\TestCase;
-use \role_expire;
+use role_expire;
 
 class ModTest extends TestCase
 {
     public function testModuleFileExists()
     {
-        $file_name = realpath(PATH_THIRD.'/role_expire/mod.role_expire.php');
+        $file_name = realpath(PATH_THIRD . '/role_expire/mod.role_expire.php');
         $this->assertNotNull($file_name);
         require_once $file_name;
     }
