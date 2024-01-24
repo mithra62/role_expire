@@ -225,7 +225,7 @@ class RolesService
             if ($settings->enabled() &&
                 $ttl != '0'
             ) {
-                $join_date = $this->getJoinDate($member);
+                $join_date = $this->getActivatedDate($member);
                 $expire_date = $join_date + $ttl;
                 if (time() >= $expire_date) {
                     $this->updateRole($member, $role_id, $settings->expired_role);
@@ -252,6 +252,26 @@ class RolesService
         }
 
         return $join_data->first()->date_registered;
+    }
+
+    /**
+     * @param MemberModel $member
+     * @return int
+     */
+    protected function getActivatedDate(MemberModel $member): int
+    {
+        $join_data = ee('Model')
+            ->get('role_expire:Member')
+            ->filter('member_id', $member->member_id);
+
+        if ($join_data->count() == 0) {
+            $this->createJoinData($member);
+            $join_data = ee('Model')
+                ->get('role_expire:Member')
+                ->filter('member_id', $member->member_id);
+        }
+
+        return $join_data->first()->date_activated;
     }
 
     /**
