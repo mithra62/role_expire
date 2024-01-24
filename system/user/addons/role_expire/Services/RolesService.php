@@ -266,7 +266,7 @@ class RolesService
         $data = [
             'member_id' => $member->member_id,
             'date_registered' => $member->join_date,
-            'date_activated' => $member->join_date,
+            'date_activated' => ee()->localize->now,
         ];
 
         $join_data->set($data);
@@ -287,6 +287,9 @@ class RolesService
             ee()->db->delete('members_roles', ['role_id' => $from, 'member_id' => $member->member_id]);
             ee()->db->insert('members_roles', ['role_id' => $to, 'member_id' => $member->member_id]);
         }
+
+        //remove logged member setup
+        ee()->db->delete('role_expire_members', ['member_id' => $member->member_id]);
     }
 
     /**
