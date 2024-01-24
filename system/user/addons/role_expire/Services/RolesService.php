@@ -197,13 +197,14 @@ class RolesService
     public function processMemberRoleCheck(MemberModel $member): void
     {
         $roles = $member->Roles;
+        $found = false;
         if ($roles instanceof Collection) {
             foreach ($roles as $role) {
-                $this->processRoleCheck($role->role_id, $member);
+                $found = $this->processRoleCheck($role->role_id, $member);
             }
         }
 
-        if ($member->PrimaryRole->role_id) {
+        if (!$found && $member->PrimaryRole->role_id) {
             $this->processRoleCheck($member->PrimaryRole->role_id, $member);
         }
     }
@@ -211,10 +212,11 @@ class RolesService
     /**
      * @param int $role_id
      * @param MemberModel $member
-     * @return void
+     * @return bool
      */
-    protected function processRoleCheck(int $role_id, MemberModel $member): void
+    protected function processRoleCheck(int $role_id, MemberModel $member): bool
     {
+        $found = false;
         $expire_data = ee('Model')
             ->get('role_expire:Settings')
             ->filter('role_id', $role_id);
@@ -225,6 +227,7 @@ class RolesService
             if ($settings->enabled() &&
                 $ttl != '0'
             ) {
+                $found = true;
                 $join_date = $this->getActivatedDate($member);
                 $expire_date = $join_date + $ttl;
                 if (time() >= $expire_date) {
@@ -232,6 +235,8 @@ class RolesService
                 }
             }
         }
+
+        return $found;
     }
 
     /**
@@ -301,10 +306,10 @@ class RolesService
      */
     protected function updateRole(MemberModel $member, $from, $to): void
     {
+        ee()->db->delete('members_roles', ['role_id' => $from, 'member_id' => $member->member_id]);
         if ($member->PrimaryRole->role_id == $from) {
             ee()->db->update('members', ['role_id' => $to], ['member_id' => $member->member_id]);
         } else {
-            ee()->db->delete('members_roles', ['role_id' => $from, 'member_id' => $member->member_id]);
             ee()->db->insert('members_roles', ['role_id' => $to, 'member_id' => $member->member_id]);
         }
 
