@@ -1,6 +1,2 @@
 /system/user/addons/role_expire/Tests/.phpunit.result.cache
-/system/user/addons/role_expire/Tests/logs/junit.xml
-/system/user/addons/role_expire/Tests/logs/teamcity.txt
-/system/user/addons/role_expire/Tests/logs/testdox.xml
-/system/user/addons/role_expire/Tests/logs/testdox.html
-/system/user/addons/role_expire/Tests/logs/testdox.txt
+/system/user/addons/role_expire/Tests/logs/*

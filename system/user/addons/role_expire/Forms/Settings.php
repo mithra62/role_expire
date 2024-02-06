@@ -1,8 +1,9 @@
 <?php
+
 namespace Mithra62\RoleExpire\Forms;
 
 use ExpressionEngine\Library\CP\Form\AbstractForm;
-use ExpressionEngine\Model\Role\Role AS RoleModel;
+use ExpressionEngine\Model\Role\Role as RoleModel;
 use ExpressionEngine\Service\Validation\Validator;
 
 class Settings extends AbstractForm
@@ -73,7 +74,7 @@ class Settings extends AbstractForm
         $field_set = $field_group->getFieldSet('re.form.notify_enabled');
         $field_set->setDesc('re.form.desc.notify_enabled');
         $field = $field_set->getField('notify_enabled', 'select');
-        $field->setValue($this->get('notify_enabled', 0))
+        $field->set('group_toggle', ['1' => 'notification'])->setValue($this->get('notify_enabled', 0))
             ->setChoices([
                 '1' => 'Yes',
                 '0' => 'No',
@@ -81,29 +82,34 @@ class Settings extends AbstractForm
 
         $options = ee('role_expire:RolesService')->getEmailTimeOptions();
         $field_set = $field_group->getFieldSet('re.form.notify_ttl');
+        $field_set->set('group', 'notification');
         $field_set->setDesc('re.form.desc.notify_ttl');
         $field = $field_set->getField('notify_ttl', 'select');
         $field->setValue($this->get('notify_ttl', 0))
             ->setChoices($options);
 
         $field_set = $field_group->getFieldSet('re.form.notify_to');
+        $field_set->set('group', 'notification');
         $field_set->setDesc('re.form.note.notify_to');
         $field = $field_set->getField('notify_to', 'text')
             ->setValue($this->get('notify_to'));
 
         $field_set = $field_group->getFieldSet('re.form.notify_subject');
+        $field_set->set('group', 'notification');
         $field_set->setDesc('re.form.note.notify_subject');
         $field = $field_set->getField('notify_subject', 'text')
             ->setValue($this->get('notify_subject'));
 
         $options = ee('role_expire:RolesService')->getEmailFormatOptions();
         $field_set = $field_group->getFieldSet('re.form.notify_format');
+        $field_set->set('group', 'notification');
         $field_set->setDesc('re.form.desc.notify_format');
         $field = $field_set->getField('notify_format', 'select');
         $field->setValue($this->get('notify_format'))
             ->setChoices($options);
 
         $field_set = $field_group->getFieldSet('re.form.notify_body');
+        $field_set->set('group', 'notification');
         $field_set->setDesc('re.form.note.notify_body');
         $field = $field_set->getField('notify_body', 'textarea')
             ->setValue($this->get('notify_body'));
@@ -135,7 +141,7 @@ class Settings extends AbstractForm
     protected function roleOptions(): array
     {
         $options = ['' => ' '] + parent::roleOptions();
-        foreach($options AS $key => $value) {
+        foreach ($options as $key => $value) {
             if ($key == $this->getRole()->role_id || $key == 1) {
                 unset($options[$key]);
             }
@@ -152,9 +158,9 @@ class Settings extends AbstractForm
     public function get(string $key = '', $default = '')
     {
         $value = ee()->input->post($key);
-        if(!$value) {
+        if (!$value) {
             $value = ee('role_expire:RolesService')->getSetting($this->getRole()->role_id, $key);
-            if(!$value) {
+            if (!$value) {
                 $value = parent::get($key, $default);
             }
         }

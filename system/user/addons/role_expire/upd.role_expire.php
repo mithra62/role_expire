@@ -1,6 +1,6 @@
 <?php
 
-if (! defined('BASEPATH')) {
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -34,8 +34,8 @@ class Role_expire_upd extends Installer
     public $actions = [
         [
             'class' => 'Role_expire',
-            'method' => 'member_notification_action'
-        ]
+            'method' => 'member_notification_action',
+        ],
     ];
 
     /**
@@ -56,7 +56,7 @@ class Role_expire_upd extends Installer
             'method' => 'check_on_login',
             'hook' => 'member_member_login_single',
             'priority' => 10,
-        ]
+        ],
     ];
 
     /**
@@ -119,73 +119,73 @@ class Role_expire_upd extends Installer
                 'constraint' => 10,
                 'unsigned' => true,
                 'null' => false,
-                'auto_increment'=> true
+                'auto_increment' => true,
             ],
-            'role_id'	=> [
+            'role_id' => [
                 'type' => 'int',
                 'constraint' => 10,
                 'null' => false,
-                'default' => '0'
+                'default' => '0',
             ],
-            'ttl'  => [
+            'ttl' => [
                 'type' => 'varchar',
                 'constraint' => 10,
                 'null' => false,
-                'default' => '0'
+                'default' => '0',
             ],
             'ttl_custom' => [
                 'type' => 'int',
                 'constraint' => 10,
                 'null' => true,
-                'default' => null
+                'default' => null,
             ],
             'expired_role' => [
                 'type' => 'int',
                 'constraint' => 10,
                 'null' => true,
-                'default' => null
+                'default' => null,
             ],
-            'notify_ttl'  => [
+            'notify_ttl' => [
                 'type' => 'int',
                 'constraint' => 10,
                 'null' => true,
-                'default' => null
+                'default' => null,
             ],
-            'notify_format'  => [
+            'notify_format' => [
                 'type' => 'varchar',
                 'constraint' => 10,
                 'null' => false,
-                'default' => 'html'
+                'default' => 'html',
             ],
-            'notify_to'  => [
+            'notify_to' => [
                 'type' => 'varchar',
                 'constraint' => 255,
                 'null' => true,
-                'default' => null
+                'default' => null,
             ],
-            'notify_subject'  => [
+            'notify_subject' => [
                 'type' => 'varchar',
                 'constraint' => 255,
                 'null' => true,
-                'default' => null
+                'default' => null,
             ],
-            'notify_body'  => [
+            'notify_body' => [
                 'type' => 'longtext',
                 'null' => true,
-                'default' => null
+                'default' => null,
             ],
-            'notify_enabled'  => [
+            'notify_enabled' => [
                 'type' => 'int',
                 'constraint' => 1,
                 'null' => false,
-                'default' => '0'
+                'default' => '0',
             ],
             'enabled' => [
                 'type' => 'int',
                 'constraint' => 1,
                 'null' => false,
-                'default' => '0'
-            ]
+                'default' => '0',
+            ],
         ];
 
         ee()->dbforge->add_field($fields);
@@ -204,25 +204,25 @@ class Role_expire_upd extends Installer
                 'constraint' => 10,
                 'unsigned' => true,
                 'null' => false,
-                'auto_increment'=> true
+                'auto_increment' => true,
             ],
-            'member_id'	=> [
+            'member_id' => [
                 'type' => 'int',
                 'constraint' => 10,
                 'null' => false,
-                'default' => '0'
+                'default' => '0',
             ],
-            'date_registered'	=> [
+            'date_registered' => [
                 'type' => 'int',
                 'constraint' => 10,
                 'null' => false,
-                'default' => '0'
+                'default' => '0',
             ],
-            'date_activated'	=> [
+            'date_activated' => [
                 'type' => 'int',
                 'constraint' => 10,
                 'null' => false,
-                'default' => '0'
+                'default' => '0',
             ],
         ];
 

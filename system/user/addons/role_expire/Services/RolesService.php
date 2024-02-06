@@ -1,13 +1,13 @@
 <?php
+
 namespace Mithra62\RoleExpire\Services;
 
-use ExpressionEngine\Model\Role\Role AS RoleModel;
-use ExpressionEngine\Service\Model\Collection;
-use Mithra62\RoleExpire\Model\Member;
-use Mithra62\RoleExpire\Model\RoleExpire AS RoleExpireModel;
-use ExpressionEngine\Model\Member\Member AS MemberModel;
-use ExpressionEngine\Service\Model\Query\Builder;
 use CI_DB_result;
+use ExpressionEngine\Model\Member\Member as MemberModel;
+use ExpressionEngine\Model\Role\Role as RoleModel;
+use ExpressionEngine\Service\Model\Collection;
+use ExpressionEngine\Service\Model\Query\Builder;
+use Mithra62\RoleExpire\Model\RoleExpire as RoleExpireModel;
 
 class RolesService
 {
@@ -33,7 +33,7 @@ class RolesService
         '5184000' => '60 Days',
         '15552000' => '6 Months',
         '31104000' => '1 Year',
-        'custom' => 'Custom'
+        'custom' => 'Custom',
     ];
 
     /**
@@ -90,7 +90,7 @@ class RolesService
     public function checkTtl(RoleModel $role): string
     {
         $settings = $this->getSetting($role->role_id, 'ttl');
-        if($settings) {
+        if ($settings) {
             $settings = array_key_exists($settings, $this->ttl_options) ? $this->ttl_options[$settings] : $settings . ' (custom)';
             return $settings;
         }
@@ -120,7 +120,7 @@ class RolesService
     public function getEnabled(RoleModel $role): string
     {
         $settings = $this->getSetting($role->role_id, 'enabled');
-        if($settings === 1) {
+        if ($settings === 1) {
             return lang('re.role.enabled');
         }
 
@@ -136,9 +136,9 @@ class RolesService
     public function getSetting(int $role_id, string $key, $default = false)
     {
         $settings = $this->getSettings($role_id);
-        if($settings instanceof RoleExpireModel) {
+        if ($settings instanceof RoleExpireModel) {
             $arr = $settings->toArray();
-            if(array_key_exists($key, $arr)) {
+            if (array_key_exists($key, $arr)) {
                 return $arr[$key];
             }
         }
@@ -158,7 +158,7 @@ class RolesService
                 ->get('role_expire:Settings')
                 ->filter('role_id', $role_id);
 
-            if($settings->count() == 0) {
+            if ($settings->count() == 0) {
                 $settings = $this->addSettings($role_id);
             } else {
                 $settings = $settings->first();
@@ -197,13 +197,14 @@ class RolesService
     public function processMemberRoleCheck(MemberModel $member): void
     {
         $roles = $member->Roles;
+        $found = false;
         if ($roles instanceof Collection) {
-            foreach($roles AS $role) {
-                $this->processRoleCheck($role->role_id, $member);
+            foreach ($roles as $role) {
+                $found = $this->processRoleCheck($role->role_id, $member);
             }
         }
 
-        if ($member->PrimaryRole->role_id) {
+        if (!$found && $member->PrimaryRole->role_id) {
             $this->processRoleCheck($member->PrimaryRole->role_id, $member);
         }
     }
@@ -211,27 +212,31 @@ class RolesService
     /**
      * @param int $role_id
      * @param MemberModel $member
-     * @return void
+     * @return bool
      */
-    protected function processRoleCheck(int $role_id, MemberModel $member): void
+    protected function processRoleCheck(int $role_id, MemberModel $member): bool
     {
+        $found = false;
         $expire_data = ee('Model')
             ->get('role_expire:Settings')
             ->filter('role_id', $role_id);
 
         if ($expire_data->count() == 1) {
             $settings = $expire_data->first();
-            $ttl = $settings->ttl != 'custom' ? $settings->ttl  : $settings->ttl_custom;
-            if($settings->enabled() &&
+            $ttl = $settings->ttl != 'custom' ? $settings->ttl : $settings->ttl_custom;
+            if ($settings->enabled() &&
                 $ttl != '0'
             ) {
-                $join_date = $this->getJoinDate($member);
-                $expire_date = $join_date + $ttl ;
-                if(time() >= $expire_date) {
+                $found = true;
+                $join_date = $this->getActivatedDate($member);
+                $expire_date = $join_date + $ttl;
+                if (time() >= $expire_date) {
                     $this->updateRole($member, $role_id, $settings->expired_role);
                 }
             }
         }
+
+        return $found;
     }
 
     /**
@@ -244,7 +249,7 @@ class RolesService
             ->get('role_expire:Member')
             ->filter('member_id', $member->member_id);
 
-        if($join_data->count() == 0) {
+        if ($join_data->count() == 0) {
             $this->createJoinData($member);
             $join_data = ee('Model')
                 ->get('role_expire:Member')
@@ -252,6 +257,26 @@ class RolesService
         }
 
         return $join_data->first()->date_registered;
+    }
+
+    /**
+     * @param MemberModel $member
+     * @return int
+     */
+    protected function getActivatedDate(MemberModel $member): int
+    {
+        $join_data = ee('Model')
+            ->get('role_expire:Member')
+            ->filter('member_id', $member->member_id);
+
+        if ($join_data->count() == 0) {
+            $this->createJoinData($member);
+            $join_data = ee('Model')
+                ->get('role_expire:Member')
+                ->filter('member_id', $member->member_id);
+        }
+
+        return $join_data->first()->date_activated;
     }
 
     /**
@@ -266,7 +291,7 @@ class RolesService
         $data = [
             'member_id' => $member->member_id,
             'date_registered' => $member->join_date,
-            'date_activated' => $member->join_date,
+            'date_activated' => ee()->localize->now,
         ];
 
         $join_data->set($data);
@@ -281,12 +306,15 @@ class RolesService
      */
     protected function updateRole(MemberModel $member, $from, $to): void
     {
-        if($member->PrimaryRole->role_id == $from) {
-            ee()->db->update('members', ['role_id' => $to], ['member_id'=> $member->member_id]);
+        ee()->db->delete('members_roles', ['role_id' => $from, 'member_id' => $member->member_id]);
+        if ($member->PrimaryRole->role_id == $from) {
+            ee()->db->update('members', ['role_id' => $to], ['member_id' => $member->member_id]);
         } else {
-            ee()->db->delete('members_roles', ['role_id' => $from, 'member_id' => $member->member_id]);
             ee()->db->insert('members_roles', ['role_id' => $to, 'member_id' => $member->member_id]);
         }
+
+        //remove logged member setup
+        ee()->db->delete('role_expire_members', ['member_id' => $member->member_id]);
     }
 
     /**
@@ -298,18 +326,18 @@ class RolesService
     {
         $member_ids = $return = [];
         $query = ee()->db->select('member_id')->from('members')->where(['role_id' => $role_id])->get(); //primary
-        if($query instanceof CI_DB_result && $query->num_rows() >= 1) {
-            foreach($query->result_array() AS $row) {
+        if ($query instanceof CI_DB_result && $query->num_rows() >= 1) {
+            foreach ($query->result_array() as $row) {
                 $member_ids[$row['member_id']] = $row['member_id'];
             }
         }
 
         $query = ee()->db->select('member_id')->from('members_roles')->where(['role_id' => $role_id])->get(); //secondary
-        foreach($query->result_array() AS $row) {
+        foreach ($query->result_array() as $row) {
             $member_ids[$row['member_id']] = $row['member_id'];
         }
 
-        if($member_ids) {
+        if ($member_ids) {
             $date = time() + ($ttl - $notify_ttl);
             $join_data = ee('Model')
                 ->get('role_expire:Member')
@@ -340,8 +368,8 @@ class RolesService
             ->filter('expired_role', '!=', 0);
 
         $avoid = [];
-        if($settings instanceof Builder && $settings->count() >= 1) {
-            foreach($settings->all() AS $setting) {
+        if ($settings instanceof Builder && $settings->count() >= 1) {
+            foreach ($settings->all() as $setting) {
                 $avoid[] = $setting->expired_role;
             }
         }
@@ -350,7 +378,7 @@ class RolesService
             ->get('ee:Role')
             ->filter('role_id', '>=', 5);
 
-        if($avoid) {
+        if ($avoid) {
             $roles->filter('role_id', 'NOT IN', $avoid);
         }
 

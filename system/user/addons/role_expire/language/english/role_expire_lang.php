@@ -11,10 +11,8 @@ $lang = [
     're.role.disabled' => 'Disabled',
     're.role.manage' => 'Manage',
     're.role.none' => 'None',
-
     're.header.list_role_expire' => 'List Roles',
     're.header.edit_role_expire' => 'Edit Role Expiration',
-
     're.error.update_role_expire' => 'Error Updating Role',
     're.form.role_name' => 'Role Name',
     're.form.ttl' => 'Role Expire Time',
@@ -35,16 +33,14 @@ $lang = [
     're.form.desc.notify_email_format' => 'Whether to send the email in plain text or full HTML',
     're.form.notify_ttl' => 'Notify Before Expire',
     're.form.desc.notify_ttl' => 'How soon before an account expires do you want to send a notification out?',
-
     're.form.desc.role_name' => 'The colloquial name for the Member Role we\'re modifying',
     're.form.desc.ttl' => 'How long do you want Members with this Role to stay active on the site?',
     're.form.desc.enabled' => 'Do you want the rules to apply to current Members of this Role?',
     're.form.note.ttl_custom' => 'The custom integer (in seconds) for how long the Member Role should allow access.',
-
+    're.form.notify_format' => 'Email Format',
+    're.form.desc.notify_format' => 'The format for the email',
     're.error.cannot_edit_super_admin' => 'Cannot Expire Super Admins',
     're.error.role_not_found' => 'Role Not Found',
-
     're.success.role_edited' => 'Role Expire Edited',
-
     're.member_role_expired_error' => 'This account has expired and you are no longer able to continue using this site.',
 ];

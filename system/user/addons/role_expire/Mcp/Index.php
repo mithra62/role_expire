@@ -2,8 +2,8 @@
 
 namespace Mithra62\RoleExpire\Mcp;
 
-use ExpressionEngine\Service\Addon\Controllers\Mcp\AbstractRoute;
 use ExpressionEngine\Library\CP\Table;
+use ExpressionEngine\Service\Addon\Controllers\Mcp\AbstractRoute;
 
 class Index extends AbstractRoute
 {
@@ -77,7 +77,7 @@ class Index extends AbstractRoute
 
         $roles->order($sort_map[$sort_col], $sort_dir);
         foreach ($roles->all() as $role) {
-            $url = $this->url( 'edit/' . $role->getId());
+            $url = $this->url('edit/' . $role->getId());
             $data[] = [
                 [
                     'content' => $role->getId(),
